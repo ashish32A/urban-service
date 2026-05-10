@@ -96,7 +96,7 @@ export default function BookingFormPage() {
             {/* Time Slot Selector */}
             <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
               <h2 className="font-semibold text-[#1A2B4A] mb-4">⏰ Select Time Slot</h2>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {TIME_SLOTS.map(({ id, label, time }) => (
                   <button
                     key={id}

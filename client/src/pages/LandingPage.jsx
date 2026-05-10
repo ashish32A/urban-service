@@ -62,12 +62,12 @@ export default function LandingPage() {
           </div>
 
           {/* ─── MakeMyTrip-Style Search Bar ──────────────────────────── */}
-          <div className="bg-white rounded-2xl shadow-2xl p-2 max-w-3xl mx-auto flex flex-col sm:flex-row gap-2">
+          <div className="bg-white rounded-2xl shadow-2xl p-3 sm:p-2 max-w-3xl mx-auto flex flex-col sm:flex-row gap-2">
             {/* City Selector */}
-            <div className="flex-1 flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-xl">
+            <div className="flex-1 flex items-center gap-3 px-4 py-3 sm:py-2 bg-gray-50 rounded-xl border border-gray-100 sm:border-none">
               <span className="text-xl">📍</span>
-              <div className="flex-1">
-                <label className="text-xs text-gray-400 font-medium uppercase tracking-wide block">City</label>
+              <div className="flex-1 text-left">
+                <label className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">City</label>
                 <select
                   id="hero-city"
                   value={city}
@@ -83,10 +83,10 @@ export default function LandingPage() {
             <div className="w-px bg-gray-200 hidden sm:block" />
 
             {/* Service Selector */}
-            <div className="flex-1 flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-xl">
+            <div className="flex-1 flex items-center gap-3 px-4 py-3 sm:py-2 bg-gray-50 rounded-xl border border-gray-100 sm:border-none">
               <span className="text-xl">🔍</span>
-              <div className="flex-1">
-                <label className="text-xs text-gray-400 font-medium uppercase tracking-wide block">Service</label>
+              <div className="flex-1 text-left">
+                <label className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Service</label>
                 <select
                   id="hero-service"
                   value={service}
@@ -102,19 +102,19 @@ export default function LandingPage() {
             {/* CTA */}
             <Link
               to={service ? `/services/${service}` : '/services'}
-              className="bg-[#E74C3C] hover:bg-red-600 text-white font-bold px-8 py-3.5 rounded-xl transition-all
-                         shadow-lg hover:shadow-red-200 active:scale-95 whitespace-nowrap no-underline text-sm flex items-center gap-2"
+              className="bg-[#E74C3C] hover:bg-red-600 text-white font-bold px-8 py-4 sm:py-3.5 rounded-xl transition-all
+                         shadow-lg hover:shadow-red-200 active:scale-95 whitespace-nowrap no-underline text-sm flex items-center justify-center gap-2"
             >
               🔍 Find Professionals
             </Link>
           </div>
 
           {/* Quick Stats */}
-          <div className="flex flex-wrap justify-center gap-8 mt-10">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-12 mt-10">
             {[['50K+', 'Happy Customers'], ['5K+', 'Verified Pros'], ['30+', 'Services'], ['4.8★', 'Avg Rating']].map(([v, l]) => (
-              <div key={l} className="text-center">
-                <p className="text-2xl font-bold text-[#F39C12]">{v}</p>
-                <p className="text-xs text-gray-400">{l}</p>
+              <div key={l} className="text-center min-w-[80px]">
+                <p className="text-xl sm:text-2xl font-bold text-[#F39C12]">{v}</p>
+                <p className="text-[10px] sm:text-xs text-gray-400 uppercase font-medium">{l}</p>
               </div>
             ))}
           </div>
@@ -125,11 +125,11 @@ export default function LandingPage() {
       <section id="services" className="py-16 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-heading font-bold text-[#1A2B4A]">What are you looking for?</h2>
-            <p className="text-gray-500 mt-2">Choose from 30+ professional home service categories</p>
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-[#1A2B4A]">What are you looking for?</h2>
+            <p className="text-gray-500 text-sm mt-2">Choose from 30+ professional home service categories</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
             {CATEGORIES.map(({ name, icon, slug, bg }) => (
               <Link
                 key={slug}
