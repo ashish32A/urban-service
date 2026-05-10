@@ -1,70 +1,150 @@
-# Getting Started with Create React App
+# UrbanServe 🏠
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Urban Company-style on-demand home services platform — React 18 + Node.js + MongoDB monorepo.
 
-## Available Scripts
+![Tech Stack](https://img.shields.io/badge/React-18-blue) ![Node](https://img.shields.io/badge/Node.js-20-green) ![MongoDB](https://img.shields.io/badge/MongoDB-7-green) ![Tailwind](https://img.shields.io/badge/Tailwind-3-blue) ![Socket.IO](https://img.shields.io/badge/Socket.IO-4-black)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Architecture
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+urban-demo/
+├── client/          React 18 + Vite + Tailwind CSS + Redux Toolkit
+├── server/          Node.js + Express + MongoDB + Socket.IO
+├── shared/          JSDoc types + shared constants
+└── docker-compose.yml
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Quick Start (Local)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
+- Node.js 18+
+- MongoDB running locally (or Docker)
 
-### `npm run build`
+### 1. Install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm run install:all
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 2. Environment Variables
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cp server/.env.example server/.env   # fill in MONGO_URI, JWT secrets
+cp client/.env.example client/.env   # fill in VITE_API_BASE_URL
+```
 
-### `npm run eject`
+### 3. Seed the Database
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm run seed
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Seeded accounts:
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@urbanserve.com | Admin@1234 |
+| Vendor | rajesh@vendor.com | Vendor@123 |
+| Vendor | priya@vendor.com | Vendor@123 |
+| Vendor | ali@vendor.com | Vendor@123 |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 4. Start Dev Servers
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm run dev
+# Client → http://localhost:3000
+# Server → http://localhost:5000/health
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Docker
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run docker:up   # builds and starts all services
+npm run docker:down # stop
+```
 
-### Code Splitting
+| Service | Port |
+|---------|------|
+| Client (nginx) | 3000 |
+| Server (Express + Socket.IO) | 5000 |
+| MongoDB | 27017 |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Environment Variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Server (`server/.env`)
 
-### Making a Progressive Web App
+| Variable | Required | Description |
+|---|---|---|
+| `MONGO_URI` | ✅ | MongoDB connection string |
+| `JWT_ACCESS_SECRET` | ✅ | Access token secret (32+ chars) |
+| `JWT_REFRESH_SECRET` | ✅ | Refresh token secret (32+ chars) |
+| `PORT` | ✅ | Express port (default 5000) |
+| `CLIENT_URL` | ✅ | Frontend URL for CORS |
+| `SMTP_HOST/USER/PASS` | ⚠️ | Nodemailer config |
+| `TWILIO_*` | ⚠️ | SMS OTP (optional) |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Client (`client/.env`)
 
-### Advanced Configuration
+| Variable | Description |
+|---|---|
+| `VITE_API_BASE_URL` | Backend API URL |
+| `VITE_RAZORPAY_KEY_ID` | Payment key |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## API Reference
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Auth
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/v1/auth/send-otp` | Public | Send OTP to phone |
+| POST | `/api/v1/auth/verify-otp` | Public | Verify OTP → tokens |
+| POST | `/api/v1/auth/complete-profile` | Customer | Set name/email/city |
+| POST | `/api/v1/auth/login` | Public | Vendor/Admin login |
+| POST | `/api/v1/auth/refresh-token` | Cookie | Refresh access token |
+| POST | `/api/v1/auth/logout` | Public | Clear refresh cookie |
 
-### `npm run build` fails to minify
+### Services (Public)
+`GET /api/v1/services` · `GET /api/v1/services/:id` · `GET /api/v1/services/categories`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Vendors (Public)
+`GET /api/v1/vendors/available?serviceId=&city=&sortBy=` · `GET /api/v1/vendors/:id`
+
+### Bookings (Customer)
+`POST /api/v1/bookings` · `GET /api/v1/bookings/my` · `PATCH /api/v1/bookings/:id/cancel` · `POST /api/v1/bookings/:id/review`
+
+### Vendor Portal (`/api/v1/vendors/portal/*`)
+`GET /dashboard` · `GET /bookings` · `PATCH /bookings/:id/accept|start|complete|reject` · `GET|PATCH /profile`
+
+### Admin (`/api/v1/admin/*`)
+`GET /analytics` · `GET|PATCH /users/:id/toggle` · `GET|PATCH /vendors/:id/approve|reject|toggle` · `GET|POST|PATCH|DELETE /services` · `GET /bookings`
+
+---
+
+## Real-Time Events (Socket.IO)
+
+| Event | Direction | Payload |
+|---|---|---|
+| `booking:new` | Server → Vendor | `{ bookingId, service, scheduledAt }` |
+| `booking:accepted` | Server → Customer | `{ bookingId, message }` |
+| `booking:completed` | Server → Customer | `{ bookingId, message }` |
+| `vendor:location` | Vendor → Customer | `{ lat, lng, vendorId }` |
+
+---
+
+## Tech Stack
+
+| Layer | Tech |
+|---|---|
+| Frontend | React 18, Vite, Tailwind CSS 3, Redux Toolkit, React Router v6, RHF + Zod, Socket.IO Client, Recharts |
+| Backend | Node.js, Express 4, Mongoose 8, JWT (access + refresh), bcryptjs, Nodemailer, Socket.IO |
+| Database | MongoDB 7 |
+| DevOps | Docker, docker-compose, nginx |
+| Dev | ESLint, Prettier, Concurrently, Nodemon |

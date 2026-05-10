@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: urban_mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:-password}
+      MONGO_INITDB_DATABASE: urban_db
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - urban_net
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: urban_server
+    restart: unless-stopped
+    ports:
+      - '5000:5000'
+    env_file:
+      - ./server/.env
+    environment:
+      - MONGO_URI=mongodb://admin:password@mongo:27017/urban_db?authSource=admin
+      - NODE_ENV=development
+    depends_on:
+      - mongo
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - urban_net
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: urban_client
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    env_file:
+      - ./client/.env
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    depends_on:
+      - server
+    networks:
+      - urban_net
+
+volumes:
+  mongo_data:
+
+networks:
+  urban_net:
+    driver: bridge

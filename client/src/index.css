@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ──────────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --primary: #E74C3C;
+    --secondary: #2C3E50;
+    --accent: #F39C12;
+    --bg: #F8F9FA;
+    --surface: #FFFFFF;
+    --text-primary: #1A1A2E;
+    --text-secondary: #6B7280;
+    --border: #E5E7EB;
+    --radius: 0.75rem;
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  * {
+    @apply box-border m-0 p-0;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-gray-50 text-secondary-500 font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', system-ui, sans-serif;
+    @apply font-semibold text-secondary-500;
+  }
+
+  a {
+    @apply text-primary-500 hover:text-primary-600 transition-colors duration-200;
+  }
+
+  img {
+    @apply max-w-full;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary-400 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-500;
+  }
+}
+
+/* ─── Components ────────────────────────────────────────────────────────── */
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm
+           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-400
+           shadow-md hover:shadow-card-hover active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply btn bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-400
+           shadow-md active:scale-95;
+  }
+
+  .btn-accent {
+    @apply btn bg-accent-500 text-white hover:bg-accent-600 focus:ring-accent-400
+           shadow-md active:scale-95;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-primary-500 text-primary-500 hover:bg-primary-50
+           focus:ring-primary-400 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply btn text-secondary-500 hover:bg-gray-100 focus:ring-gray-300;
+  }
+
+  .btn-lg {
+    @apply px-8 py-3.5 text-base rounded-xl;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs rounded-lg;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden
+           transition-all duration-300 hover:shadow-card-hover;
+  }
+
+  .card-body {
+    @apply p-6;
+  }
+
+  /* Form inputs */
+  .form-label {
+    @apply block text-sm font-medium text-secondary-500 mb-1.5;
+  }
+
+  .form-input {
+    @apply w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-secondary-500
+           text-sm placeholder-gray-400 outline-none transition-all duration-200
+           focus:border-primary-400 focus:ring-2 focus:ring-primary-100
+           disabled:bg-gray-50 disabled:text-gray-400;
+  }
+
+  .form-input-error {
+    @apply border-red-400 focus:border-red-400 focus:ring-red-100;
+  }
+
+  .form-error-msg {
+    @apply text-xs text-red-500 mt-1;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-700;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 text-green-700;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-100 text-amber-700;
+  }
+
+  .badge-error {
+    @apply badge bg-red-100 text-red-700;
+  }
+
+  /* Section container */
+  .section {
+    @apply py-16 px-4;
+  }
+
+  .container-app {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-gray-200 my-6;
+  }
+
+  /* Avatar */
+  .avatar {
+    @apply rounded-full object-cover bg-gray-200;
+  }
+
+  /* Spinner */
+  .spinner {
+    @apply inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin;
+  }
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-brand {
+    @apply bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-500;
+  }
+
+  .glass {
+    backdrop-filter: blur(12px);
+    @apply bg-white/80 border border-white/20;
+  }
+}
